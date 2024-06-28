@@ -2,12 +2,7 @@ from fastapi import APIRouter
 import uuid
 from src.schemas.clothing import ClothingSchema
 
-
-router = APIRouter(
-    prefix='/clothing',
-    tags=['Clothing'],
-
-)
+router = APIRouter()
 
 fake_clothing = [
     {'id': str(uuid.uuid4()), 'brand': 'Nike', 'name': 'vintage', 'size': 'L', 'price': 50,
