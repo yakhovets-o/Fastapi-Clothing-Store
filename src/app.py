@@ -5,8 +5,9 @@ from configurations import settings
 from api import router as api_router
 
 app = FastAPI(
-    title='Clothing Store',
-    description='Realization of vintage clothes'
+    title=settings.fastapi.title,
+    description=settings.fastapi.description
+
 )
 
 include_router(app)
