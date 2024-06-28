@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     run: RunAppConfig = RunAppConfig()
     fastapi: FastApiConfig = FastApiConfig()
     api: ApiConfig = ApiConfig()
+    db: DatabaseConfig
 
 
 settings = Settings()
