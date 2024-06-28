@@ -1,7 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 
-from src.api import include_router
+from configurations import settings
+from api import router as api_router
 
 app = FastAPI(
     title='Clothing Store',
