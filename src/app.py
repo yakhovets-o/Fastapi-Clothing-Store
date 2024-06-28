@@ -1,10 +1,12 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
 
 from configurations import settings
 from api import router as api_router
 
 app = FastAPI(
+    default_response_class=ORJSONResponse,
     title=settings.fastapi.title,
     description=settings.fastapi.description
 
