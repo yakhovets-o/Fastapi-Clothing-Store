@@ -6,6 +6,7 @@ from .app import (
     RunAppConfig,
     FastApiConfig,
     ApiConfig)
+from .database import DatabaseConfig
 
 
 class Settings(BaseSettings):
