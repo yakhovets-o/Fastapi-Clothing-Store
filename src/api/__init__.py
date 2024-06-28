@@ -4,5 +4,9 @@ from src.configurations import settings
 
 from .api_v1 import router as router_api_v1
 
-def include_router(app):
-    app.include_router(clothing_router)
+router = APIRouter()
+
+router.include_router(
+    router=router_api_v1,
+    prefix=settings.api.main_prefix
+)
