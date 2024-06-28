@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class RunAppConfig(BaseModel):
     host: str = '127.0.0.1'
     port: int = 8000
+    reload: bool = True
 
 
 class FastApiConfig(BaseModel):
