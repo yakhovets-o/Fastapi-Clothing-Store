@@ -6,7 +6,7 @@ from pydantic import (
 
 class DatabaseConfig(BaseModel):
     url: PostgresDsn
-    echo: bool = True
+    echo: bool = False
     echo_pool: bool = False
     pool_size: int = 30
     max_overflow: int = 10
