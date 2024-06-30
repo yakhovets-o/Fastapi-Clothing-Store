@@ -16,7 +16,7 @@ load_dotenv(find_dotenv())
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=('.env',),
+        env_file=(os.getenv('FASTAPI__DB__URL'),),
         case_sensitive=False,
         env_nested_delimiter='__',
         env_prefix='FASTAPI__'
