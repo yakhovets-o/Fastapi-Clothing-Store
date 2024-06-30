@@ -1,10 +1,7 @@
 from datetime import datetime, timezone
-from enum import Enum
 from pydantic import BaseModel, Field, UUID4
 
-
-class SizeAccessories(Enum):
-    One_size = 'One Size'
+from src.custom_data_types import SizeAccessories
 
 
 class AccessoriesSchema(BaseModel):
