@@ -1,7 +1,10 @@
+from uuid import uuid4
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy import Uuid
 
 
 class UuidPkMixin:
-    id: Mapped[Uuid] = mapped_column(primary_key=True)
+    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True),
+                                     primary_key=True,
+                                     default=uuid4)
