@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy.orm import Mapped
 
-from src.custom_data_types import SizeFootwear
+from src.utils.custom_data_types import SizeFootwear
 
 from .base import Base
 from .mixins.uuid_pk import UuidPkMixin
