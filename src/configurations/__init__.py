@@ -11,6 +11,8 @@ from .app import (
     ApiConfig)
 from .database import DatabaseConfig
 
+load_dotenv(find_dotenv())
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
