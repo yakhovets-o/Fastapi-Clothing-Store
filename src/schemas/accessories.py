@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
+
 from pydantic import BaseModel, Field, UUID4
 
-from src.custom_data_types import SizeAccessories
+from src.utils.custom_data_types import SizeAccessories
 
 
 class AccessoriesSchema(BaseModel):
