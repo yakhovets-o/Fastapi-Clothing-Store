@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
+
 from pydantic import BaseModel, Field, UUID4
 
-from src.custom_data_types import SizeClothing
+from src.utils.custom_data_types import SizeClothing
 
 
 class ClothingSchema(BaseModel):
