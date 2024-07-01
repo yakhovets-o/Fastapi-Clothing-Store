@@ -1,12 +1,12 @@
 from typing import Annotated
 
-from fastapi import APIRouter
-import uuid
-
+from fastapi import APIRouter, Path
 from fastapi import Depends
+
+from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.clothing import ClothingSchemaAddEdit
+from src.schemas.clothing import ClothingSchemaAddEdit, ClothingSchema
 from src.services.clothing import ClothingService
 from src.bd import db_helper
 
