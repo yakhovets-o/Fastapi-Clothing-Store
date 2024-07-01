@@ -5,17 +5,15 @@ from fastapi.responses import ORJSONResponse
 
 from configurations import settings
 import bd
-from src.models import Base
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
-    async with bd.db_helper.engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+
     yield
     # shutdown
-    await bd.db_helper.dispose()
+    print('lox')
 
 
 def create_app() -> FastAPI:
