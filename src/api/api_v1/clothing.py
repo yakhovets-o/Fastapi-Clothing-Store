@@ -12,26 +12,43 @@ from src.bd import db_helper
 
 router = APIRouter()
 
-fake_clothing = [
-    {'id': str(uuid.uuid4()), 'brand': 'Nike', 'name': 'vintage', 'size': 'L', 'price': 50,
-     'description': 'крутая кофта'},
-    {'id': str(uuid.uuid4()), 'brand': 'Adidas', 'name': 'new', 'size': 'S', 'price': 110,
-     'description': 'крутая майка'}
-]
+
+@router.get('/', response_model=ClothingSchema)
+async def get_all_clothing(session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+    get_all = ClothingService(session=session)
+    return await get_all.get_all_()
+
+
+@router.get('/{id}/', response_model=ClothingSchemaAddEdit)
+async def get_clothing_by_id(
+        clothing_id: Annotated[UUID4, Path(alias='id')],
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+    get_clothing = ClothingService(session=session)
+    return await get_clothing.get_by_id(_id=str(clothing_id))
 
 
 @router.post('/', response_model=ClothingSchemaAddEdit)
-async def add_clothing(
+async def create_clothing(
         clothing: ClothingSchemaAddEdit,
-        session: Annotated[
-            AsyncSession,
-            Depends(db_helper.session_getter),
-        ],):
-    print(clothing)
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     new_clothing = ClothingService(session=session)
-    print(clothing)
-    return await new_clothing.add_clothing(clothing=clothing)
+    return await new_clothing.create(clothing=clothing)
 
 
+@router.patch('/{id}/', response_model=None)
+async def update_clothing(
+        clothing_id: Annotated[UUID4, Path(alias='id')],
+        clothing: ClothingSchemaAddEdit,
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+    update_clothing = ClothingService(session=session)
+    return await update_clothing.update(_id=str(clothing_id), clothing=clothing)
 
 
+@router.delete('/{id}/', response_model=None)
+async def delete_clothing(
+        clothing_id: Annotated[UUID4, Path(alias='id')],
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
+
+    delete_clothing = ClothingService(session=session)
+
+    return await delete_clothing.delete(_id=str(clothing_id))
