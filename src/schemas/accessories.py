@@ -12,7 +12,8 @@ class AccessoriesSchema(BaseModel):
     size: SizeAccessories
     price: int = Field(ge=0)
     description: str
-    create_at: datetime = datetime.now(timezone.utc)
+    create_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True

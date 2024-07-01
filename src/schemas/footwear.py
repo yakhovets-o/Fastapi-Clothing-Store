@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from pydantic import BaseModel, Field, UUID4
 
 from src.utils.custom_data_types import SizeFootwear
@@ -11,7 +11,8 @@ class FootwearSchema(BaseModel):
     size: SizeFootwear
     price: int = Field(ge=0)
     description: str
-    create_at: datetime = datetime.now(timezone.utc)
+    create_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True
