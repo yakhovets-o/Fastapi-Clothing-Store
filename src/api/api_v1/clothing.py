@@ -1,8 +1,14 @@
+from typing import Annotated
+
 from fastapi import APIRouter
 import uuid
 
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.clothing import ClothingSchema
+from src.schemas.clothing import ClothingSchemaAddEdit
+from src.services.clothing import ClothingService
+from src.bd import db_helper
 
 router = APIRouter()
 
@@ -14,6 +20,18 @@ fake_clothing = [
 ]
 
 
-@router.get('/', response_model=list[ClothingSchema])
-async def get_clothing():
-    return [i for i in fake_clothing]
+@router.post('/', response_model=ClothingSchemaAddEdit)
+async def add_clothing(
+        clothing: ClothingSchemaAddEdit,
+        session: Annotated[
+            AsyncSession,
+            Depends(db_helper.session_getter),
+        ],):
+    print(clothing)
+    new_clothing = ClothingService(session=session)
+    print(clothing)
+    return await new_clothing.add_clothing(clothing=clothing)
+
+
+
+
