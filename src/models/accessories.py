@@ -15,4 +15,4 @@ class Accessories(UuidPkMixin, UpdatedCreatedAtMixin, Base):
     size: Mapped[SizeAccessories]
     price: Mapped[int]
     description: Mapped[str]
-    create_at: Mapped[datetime] = datetime.now(timezone.utc)
+
