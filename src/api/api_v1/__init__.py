@@ -10,5 +10,6 @@ router = APIRouter(
 
 router.include_router(
     router=clothing_router,
-    prefix=settings.api.prefix.clothing
+    prefix=settings.api.prefix.clothing,
+    tags=settings.api.tags.clothing
 )
