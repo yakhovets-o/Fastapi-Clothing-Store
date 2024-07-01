@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class SizeInternational(Enum):
+class SizeInternational(str, Enum):
     XS = 'XS'
     S = 'S'
     M = 'M'
