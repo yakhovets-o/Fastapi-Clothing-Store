@@ -1,7 +1,12 @@
+from typing import Sequence
+
+from sqlalchemy import update, delete, select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from pydantic import UUID4
+
 from src.models import Clothing
-from src.schemas import ClothingSchemaAddEdit
+from src.schemas import ClothingSchemaAddEdit, ClothingSchema
 
 
 class ClothingRepository:
