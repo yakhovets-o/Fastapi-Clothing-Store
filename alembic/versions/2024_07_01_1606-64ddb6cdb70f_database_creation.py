@@ -1,8 +1,8 @@
 """database creation
 
-Revision ID: 8288009b447c
+Revision ID: 64ddb6cdb70f
 Revises: 
-Create Date: 2024-06-30 23:15:34.681935
+Create Date: 2024-07-01 16:06:36.172840
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "8288009b447c"
+revision: str = "64ddb6cdb70f"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -31,6 +31,12 @@ def upgrade() -> None:
         sa.Column("price", sa.Integer(), nullable=False),
         sa.Column("description", sa.String(), nullable=False),
         sa.Column("id", sa.UUID(), nullable=False),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_accessories")),
     )
     op.create_table(
@@ -55,6 +61,18 @@ def upgrade() -> None:
         sa.Column("price", sa.Integer(), nullable=False),
         sa.Column("description", sa.String(), nullable=False),
         sa.Column("id", sa.UUID(), nullable=False),
+        sa.Column(
+            "create_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_clothing")),
     )
     op.create_table(
@@ -85,6 +103,18 @@ def upgrade() -> None:
         sa.Column("price", sa.Integer(), nullable=False),
         sa.Column("description", sa.String(), nullable=False),
         sa.Column("id", sa.UUID(), nullable=False),
+        sa.Column(
+            "create_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_footwear")),
     )
     # ### end Alembic commands ###
