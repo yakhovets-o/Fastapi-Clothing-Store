@@ -40,7 +40,6 @@ class ClothingRepository:
         await self.session.commit()
 
     async def delete(self, _id: UUID4) -> None:
-        print(_id)
         stmt = delete(Clothing).where(Clothing.id == _id)
 
         await self.session.execute(stmt)
