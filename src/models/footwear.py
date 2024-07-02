@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped
 
-from src.utils.custom_data_types import SizeFootwear
+from src.enums import SizeFootwear
 
 from .base import Base
 from .mixins.uuid_pk import UuidPkMixin
