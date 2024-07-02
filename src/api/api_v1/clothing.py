@@ -6,20 +6,20 @@ from fastapi import Depends
 from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.clothing import ClothingSchemaAddEdit, ClothingSchema
+from src.schemas.clothing import ClothingSchemaCRUD, ClothingSchemaORM
 from src.services.clothing import ClothingService
 from src.bd import db_helper
 
 router = APIRouter()
 
 
-@router.get('/', response_model=list[ClothingSchemaAddEdit])
+@router.get('/', response_model=list[ClothingSchemaCRUD])
 async def get_all_clothing(session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     get_all = ClothingService(session=session)
     return await get_all.get_all_()
 
 
-@router.get('/{id}/', response_model=ClothingSchemaAddEdit)
+@router.get('/{id}/', response_model=ClothingSchemaCRUD)
 async def get_clothing_by_id(
         clothing_id: Annotated[UUID4, Path(alias='id')],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
@@ -27,9 +27,9 @@ async def get_clothing_by_id(
     return await get_clothing.get_by_id(_id=clothing_id)
 
 
-@router.post('/', response_model=ClothingSchemaAddEdit)
+@router.post('/', response_model=ClothingSchemaCRUD)
 async def create_clothing(
-        clothing: ClothingSchemaAddEdit,
+        clothing: ClothingSchemaCRUD,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     new_clothing = ClothingService(session=session)
     return await new_clothing.create(clothing=clothing)
@@ -38,7 +38,7 @@ async def create_clothing(
 @router.patch('/{id}/')
 async def update_clothing(
         clothing_id: Annotated[UUID4, Path(alias='id')],
-        clothing: ClothingSchemaAddEdit,
+        clothing: ClothingSchemaCRUD,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     update_clothing = ClothingService(session=session)
     if await update_clothing.update(_id=clothing_id, clothing=clothing):
