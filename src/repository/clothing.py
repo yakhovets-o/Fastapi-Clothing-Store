@@ -1,5 +1,7 @@
 from typing import Sequence
 
+from fastapi_pagination import paginate
+
 from sqlalchemy import update, delete, select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
