@@ -1,11 +1,13 @@
 from typing import Sequence
 
+from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from pydantic import UUID4
-
 from src.repository.clothing import ClothingRepository
-from src.schemas import ClothingSchemaCRUD, ClothingSchemaORM
+from src.schemas import (
+    ClothingSchemaCRUD,
+    ClothingSchemaORM,
+)
 
 
 class ClothingService:

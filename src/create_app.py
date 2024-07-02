@@ -12,7 +12,7 @@ async def lifespan(app: FastAPI):
 
     yield
     # shutdown
-    print('lox')
+    print("lox")
 
 
 def create_app() -> FastAPI:
@@ -20,8 +20,7 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
         default_response_class=ORJSONResponse,
         title=settings.fastapi.title,
-        description=settings.fastapi.description
-
+        description=settings.fastapi.description,
     )
 
     return app

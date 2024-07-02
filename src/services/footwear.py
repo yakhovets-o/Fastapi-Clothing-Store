@@ -1,11 +1,13 @@
 from typing import Sequence
 
+from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from pydantic import UUID4
-
 from src.repository.footwear import FootwearRepository
-from src.schemas import FootwearSchemaCRUD, FootwearSchemaORM
+from src.schemas import (
+    FootwearSchemaCRUD,
+    FootwearSchemaORM,
+)
 
 
 class FootwearService:

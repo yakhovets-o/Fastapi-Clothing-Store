@@ -1,13 +1,21 @@
 __all__ = (
-    'AccessoriesSchemaORM',
-    'AccessoriesSchemaCRUD',
-    'FootwearSchemaORM',
-    'FootwearSchemaCRUD',
-    'ClothingSchemaORM',
-    'ClothingSchemaCRUD'
-
+    "AccessoriesSchemaORM",
+    "AccessoriesSchemaCRUD",
+    "FootwearSchemaORM",
+    "FootwearSchemaCRUD",
+    "ClothingSchemaORM",
+    "ClothingSchemaCRUD",
 )
 
-from .accessories import AccessoriesSchemaORM, AccessoriesSchemaCRUD
-from .footwear import FootwearSchemaORM, FootwearSchemaCRUD
-from .clothing import ClothingSchemaORM, ClothingSchemaCRUD
+from .accessories import (
+    AccessoriesSchemaCRUD,
+    AccessoriesSchemaORM,
+)
+from .clothing import (
+    ClothingSchemaCRUD,
+    ClothingSchemaORM,
+)
+from .footwear import (
+    FootwearSchemaCRUD,
+    FootwearSchemaORM,
+)

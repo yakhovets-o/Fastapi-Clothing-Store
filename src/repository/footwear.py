@@ -1,14 +1,20 @@
 from typing import Sequence
 
 from fastapi_pagination import paginate
-
-from sqlalchemy import update, delete, select, Result
+from pydantic import UUID4
+from sqlalchemy import (
+    Result,
+    delete,
+    select,
+    update,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from pydantic import UUID4
-
 from src.models import Footwear
-from src.schemas import FootwearSchemaCRUD, FootwearSchemaORM
+from src.schemas import (
+    FootwearSchemaCRUD,
+    FootwearSchemaORM,
+)
 
 
 class FootwearRepository:
@@ -19,7 +25,12 @@ class FootwearRepository:
         stmt = select(Footwear)
         result = await self.session.execute(stmt)
         footwear_models = result.scalars().all()
-        return paginate([FootwearSchemaORM.model_validate(footwear_model) for footwear_model in footwear_models])
+        return paginate(
+            [
+                FootwearSchemaORM.model_validate(footwear_model)
+                for footwear_model in footwear_models
+            ]
+        )
 
     async def get_by_id(self, _id: UUID4) -> FootwearSchemaORM:
         stmt = select(Footwear).where(Footwear.id == _id)
@@ -34,7 +45,11 @@ class FootwearRepository:
         return FootwearSchemaORM.model_validate(footwear)
 
     async def update(self, _id: UUID4, update_footwear: FootwearSchemaCRUD) -> None:
-        stmt = update(Footwear).where(Footwear.id == _id).values(**update_footwear.model_dump())
+        stmt = (
+            update(Footwear)
+            .where(Footwear.id == _id)
+            .values(**update_footwear.model_dump())
+        )
 
         await self.session.execute(stmt)
         await self.session.commit()

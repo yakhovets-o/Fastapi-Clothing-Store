@@ -1,12 +1,6 @@
-__all__ = (
-    'Base',
-    'Footwear',
-    'Clothing',
-    'Accessories'
+__all__ = ("Base", "Footwear", "Clothing", "Accessories")
 
-)
-
-from .base import Base
-from .footwear import Footwear
-from .clothing import Clothing
 from .accessories import Accessories
+from .base import Base
+from .clothing import Clothing
+from .footwear import Footwear

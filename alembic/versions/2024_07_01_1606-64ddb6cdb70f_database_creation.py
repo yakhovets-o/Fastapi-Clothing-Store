@@ -6,10 +6,14 @@ Create Date: 2024-07-01 16:06:36.172840
 
 """
 
-from typing import Sequence, Union
+from typing import (
+    Sequence,
+    Union,
+)
+
+import sqlalchemy as sa
 
 from alembic import op
-import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
@@ -25,9 +29,7 @@ def upgrade() -> None:
         "accessories",
         sa.Column("brand", sa.String(), nullable=False),
         sa.Column("name", sa.String(), nullable=False),
-        sa.Column(
-            "size", sa.Enum("One_size", name="sizeaccessories"), nullable=False
-        ),
+        sa.Column("size", sa.Enum("One_size", name="sizeaccessories"), nullable=False),
         sa.Column("price", sa.Integer(), nullable=False),
         sa.Column("description", sa.String(), nullable=False),
         sa.Column("id", sa.UUID(), nullable=False),

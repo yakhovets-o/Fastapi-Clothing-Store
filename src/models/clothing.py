@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Mapped
+
 from src.enums import SizeClothing
 
 from .base import Base
-from .mixins.uuid_pk import UuidPkMixin
 from .mixins.updated_created_at import UpdatedCreatedAtMixin
+from .mixins.uuid_pk import UuidPkMixin
 
 
 class Clothing(UuidPkMixin, Base, UpdatedCreatedAtMixin):
