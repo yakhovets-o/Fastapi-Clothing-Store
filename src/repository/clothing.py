@@ -19,7 +19,7 @@ class ClothingRepository:
         stmt = select(Clothing)
         result = await self.session.execute(stmt)
         clothing_models = result.scalars().all()
-        return [ClothingSchemaORM.model_validate(clothing_model) for clothing_model in clothing_models]
+        return paginate([ClothingSchemaORM.model_validate(clothing_model) for clothing_model in clothing_models])
 
     async def get_by_id(self, _id: UUID4) -> ClothingSchemaORM:
         stmt = select(Clothing).where(Clothing.id == _id)
