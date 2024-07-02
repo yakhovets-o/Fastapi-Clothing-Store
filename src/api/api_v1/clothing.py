@@ -17,7 +17,7 @@ from src.bd import db_helper
 router = APIRouter()
 
 
-@router.get('/', response_model=list[ClothingSchemaCRUD])
+@router.get('/', response_model=LimitOffsetPage[ClothingSchemaCRUD])
 async def get_all_clothing(session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     get_all = ClothingService(session=session)
     return await get_all.get_all_()
