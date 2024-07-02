@@ -10,7 +10,7 @@ from pydantic import UUID4
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.schemas.clothing import ClothingSchemaCRUD, ClothingSchemaORM
+from src.schemas.clothing import ClothingSchemaCRUD
 from src.services.clothing import ClothingService
 from src.bd import db_helper
 
