@@ -3,7 +3,11 @@ from typing import Annotated
 from fastapi import APIRouter, Path
 from fastapi import Depends
 
+from fastapi_pagination import add_pagination
+from fastapi_pagination.links import LimitOffsetPage
+
 from pydantic import UUID4
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.clothing import ClothingSchemaCRUD, ClothingSchemaORM
