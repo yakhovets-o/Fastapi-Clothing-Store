@@ -1,8 +1,6 @@
-from datetime import datetime, timezone
-
 from sqlalchemy.orm import Mapped
 
-from src.utils.custom_data_types import SizeAccessories
+from src.enums import SizeAccessories
 
 from .base import Base
 from .mixins.uuid_pk import UuidPkMixin
