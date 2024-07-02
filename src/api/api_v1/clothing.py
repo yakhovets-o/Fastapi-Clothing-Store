@@ -13,7 +13,7 @@ from src.bd import db_helper
 router = APIRouter()
 
 
-@router.get('/', response_model=ClothingSchema)
+@router.get('/', response_model=list[ClothingSchemaAddEdit])
 async def get_all_clothing(session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     get_all = ClothingService(session=session)
     return await get_all.get_all_()
@@ -24,7 +24,7 @@ async def get_clothing_by_id(
         clothing_id: Annotated[UUID4, Path(alias='id')],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     get_clothing = ClothingService(session=session)
-    return await get_clothing.get_by_id(_id=str(clothing_id))
+    return await get_clothing.get_by_id(_id=clothing_id)
 
 
 @router.post('/', response_model=ClothingSchemaAddEdit)
@@ -35,20 +35,21 @@ async def create_clothing(
     return await new_clothing.create(clothing=clothing)
 
 
-@router.patch('/{id}/', response_model=None)
+@router.patch('/{id}/')
 async def update_clothing(
         clothing_id: Annotated[UUID4, Path(alias='id')],
         clothing: ClothingSchemaAddEdit,
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
     update_clothing = ClothingService(session=session)
-    return await update_clothing.update(_id=str(clothing_id), clothing=clothing)
+    if await update_clothing.update(_id=clothing_id, clothing=clothing):
+        return {"message": "ok"}
 
 
-@router.delete('/{id}/', response_model=None)
+@router.delete('/{id}/')
 async def delete_clothing(
         clothing_id: Annotated[UUID4, Path(alias='id')],
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)]):
-
+    print(clothing_id)
     delete_clothing = ClothingService(session=session)
 
-    return await delete_clothing.delete(_id=str(clothing_id))
+    return await delete_clothing.delete(_id=clothing_id)
