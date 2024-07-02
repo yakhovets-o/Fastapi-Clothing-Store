@@ -4,7 +4,6 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from configurations import settings
-import bd
 
 
 @asynccontextmanager
