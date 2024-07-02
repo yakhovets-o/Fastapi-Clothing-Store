@@ -19,6 +19,9 @@ async def get_all_clothing(session: Annotated[AsyncSession, Depends(db_helper.se
     return await get_all.get_all_()
 
 
+add_pagination(router)
+
+
 @router.get('/{id}/', response_model=ClothingSchemaCRUD)
 async def get_clothing_by_id(
         clothing_id: Annotated[UUID4, Path(alias='id')],
