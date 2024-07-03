@@ -53,8 +53,8 @@ async def update_clothing(
     clothing: ClothingSchemaCRUD,
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
-    update_clothing = ClothingService(session=session)
-    if await update_clothing.update(_id=clothing_id, clothing=clothing):
+    upd_clothing = ClothingService(session=session)
+    if await upd_clothing.update(_id=clothing_id, clothing=clothing):
         return {"message": "ok"}
 
 
@@ -63,7 +63,7 @@ async def delete_clothing(
     clothing_id: Annotated[UUID4, Path(alias="id")],
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
-    print(clothing_id)
-    delete_clothing = ClothingService(session=session)
 
-    return await delete_clothing.delete(_id=clothing_id)
+    del_clothing = ClothingService(session=session)
+
+    return await del_clothing.delete(_id=clothing_id)
