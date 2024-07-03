@@ -46,13 +46,27 @@ force_grid_wrap = 0
 
 
 [tool.mypy]
-mypy_path = "./src"
+mypy_path = "ClothingStore/src"
+#Значение "silent" означает, что mypy будет следовать импортам,
+#но не будет выводить предупреждения о неразрешенных импортах.
 follow_imports = "silent"
+#Если установить значение true,
+#mypy будет более строго проверять опциональные типы (например, Optional[int]).
 strict_optional = true
+#Если установить значение true,
+#mypy будет предупреждать о лишних приведениях типов (кастах).
 warn_redundant_casts = true
+#Если установить значение true,
+#mypy будет предупреждать о неиспользуемых аннотациях типов
 warn_unused_ignores = true
+#Если установить значение true,
+#mypy запретит использование Any в параметрах типов.
 disallow_any_generics = true
+#Если установить значение true,
+#mypy будет проверять неаннотированные функции и методы.
 check_untyped_defs = true
+#Если установить значение true,
+#mypy будет запрещать неявное переэкспортирование (re-export) символов.
 no_implicit_reexport = true
 
 [build-system]
