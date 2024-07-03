@@ -23,9 +23,9 @@ class ApiPrefix(BaseModel):
 
 
 class ApiTags(BaseModel):
-    clothing: list = ["Clothing"]
-    footwear: list = ["Footwear"]
-    accessories: list = ["Accessories"]
+    clothing: str = "Clothing"
+    footwear: str = "Footwear"
+    accessories: str = "Accessories"
 
 
 class ApiConfig(BaseModel):
