@@ -1,8 +1,8 @@
 import uvicorn
 
-from api import router as api_router
-from configurations import settings
-from create_app import create_app
+from src.api import router as api_router
+from src.configurations import settings
+from src.create_app import create_app
 
 
 app = create_app()
