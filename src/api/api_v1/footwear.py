@@ -53,8 +53,8 @@ async def update_footwear(
     footwear: FootwearSchemaCRUD,
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
-    update_footwear = FootwearService(session=session)
-    if await update_footwear.update(_id=footwear_id, footwear=footwear):
+    upd_footwear = FootwearService(session=session)
+    if await upd_footwear.update(_id=footwear_id, footwear=footwear):
         return {"message": "ok"}
 
 
@@ -63,7 +63,7 @@ async def delete_footwear(
     footwear_id: Annotated[UUID4, Path(alias="id")],
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
-    print(footwear_id)
-    delete_footwear = FootwearService(session=session)
 
-    return await delete_footwear.delete(_id=footwear_id)
+    del_footwear = FootwearService(session=session)
+
+    return await del_footwear.delete(_id=footwear_id)
