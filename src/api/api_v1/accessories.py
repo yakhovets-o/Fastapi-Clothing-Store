@@ -11,8 +11,8 @@ from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.bd import db_helper
-from src.schemas.accessories import AccessoriesSchemaCRUD
-from src.services.accessories import AccessoriesService
+from src.schemas import AccessoriesSchemaCRUD
+from src.services import AccessoriesService
 
 
 router = APIRouter()

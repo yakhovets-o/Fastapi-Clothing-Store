@@ -11,8 +11,8 @@ from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.bd import db_helper
-from src.schemas.clothing import ClothingSchemaCRUD
-from src.services.clothing import ClothingService
+from src.schemas import ClothingSchemaCRUD
+from src.services import ClothingService
 
 
 router = APIRouter()
