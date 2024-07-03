@@ -8,4 +8,6 @@ from sqlalchemy.orm import (
 
 
 class UuidPkMixin:
-    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    id: Mapped[UUID[str]] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid4
+    )
