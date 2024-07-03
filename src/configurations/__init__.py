@@ -22,7 +22,7 @@ load_dotenv(find_dotenv())
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(os.getenv("FASTAPI__DB__URL"),),
+        env_file=(os.getenv("FASTAPI__DB__URL"),),  # type: ignore
         case_sensitive=False,
         env_nested_delimiter="__",
         env_prefix="FASTAPI__",
@@ -33,4 +33,4 @@ class Settings(BaseSettings):
     db: DatabaseConfig
 
 
-settings = Settings()
+settings: Settings = Settings()  # type: ignore
