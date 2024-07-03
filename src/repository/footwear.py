@@ -3,7 +3,6 @@ from typing import Sequence
 from fastapi_pagination import paginate
 from pydantic import UUID4
 from sqlalchemy import (
-    Result,
     delete,
     select,
     update,
@@ -34,7 +33,7 @@ class FootwearRepository:
 
     async def get_by_id(self, _id: UUID4) -> FootwearSchemaORM:
         stmt = select(Footwear).where(Footwear.id == _id)
-        result: Result = await self.session.execute(stmt)
+        result = await self.session.execute(stmt)
         footwear_models = result.scalar()
         return FootwearSchemaORM.model_validate(footwear_models)
 
