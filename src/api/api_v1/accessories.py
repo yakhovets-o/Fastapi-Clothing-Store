@@ -53,8 +53,8 @@ async def update_accessories(
     accessories: AccessoriesSchemaCRUD,
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
-    update_accessories = AccessoriesService(session=session)
-    if await update_accessories.update(_id=accessories_id, accessories=accessories):
+    up_accessories = AccessoriesService(session=session)
+    if await up_accessories.update(_id=accessories_id, accessories=accessories):
         return {"message": "ok"}
 
 
@@ -64,6 +64,6 @@ async def delete_accessories(
     session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
 ):
     print(accessories_id)
-    delete_accessories = AccessoriesService(session=session)
+    del_accessories = AccessoriesService(session=session)
 
-    return await delete_accessories.delete(_id=accessories_id)
+    return await del_accessories.delete(_id=accessories_id)
