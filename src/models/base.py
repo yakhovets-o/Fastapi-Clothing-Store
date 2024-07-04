@@ -13,7 +13,7 @@ class Base(DeclarativeBase):
 
     metadata = MetaData(naming_convention=settings.db.naming_convention)
 
-    @classmethod
+    @classmethod  # type: ignore
     @declared_attr
     def __tablename__(cls) -> str:
         return camel_case_to_snake_case(cls.__name__)
