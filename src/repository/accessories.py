@@ -31,11 +31,13 @@ class AccessoriesRepository:
             ]
         )
 
-    async def get_by_id(self, _id: UUID4) -> AccessoriesSchemaORM:
+    async def get_by_id(self, _id: UUID4) -> AccessoriesSchemaORM | None:
         stmt = select(Accessories).where(Accessories.id == _id)
         result = await self.session.execute(stmt)
         accessories_models = result.scalar()
-        return AccessoriesSchemaORM.model_validate(accessories_models)
+        if accessories_models:
+            return AccessoriesSchemaORM.model_validate(accessories_models)
+        return None
 
     async def create(
         self, new_accessories: AccessoriesSchemaCRUD
@@ -45,18 +47,33 @@ class AccessoriesRepository:
         await self.session.commit()
         return AccessoriesSchemaORM.model_validate(accessories)
 
-    async def update(self, _id: UUID4, update_accessories: AccessoriesSchemaCRUD) -> None:
-        stmt = (
+    async def update(
+        self, _id: UUID4, update_accessories: AccessoriesSchemaCRUD
+    ) -> dict[str, str] | None:
+        stmt_get = select(Accessories).where(Accessories.id == _id)
+        result = await self.session.execute(stmt_get)
+        accessories_models = result.scalar()
+        if not accessories_models:
+            return None
+        stmt_upd = (
             update(Accessories)
             .where(Accessories.id == _id)
             .values(**update_accessories.model_dump())
         )
 
-        await self.session.execute(stmt)
+        await self.session.execute(stmt_upd)
         await self.session.commit()
+        return {"message": f"the {_id} has been updated"}
 
-    async def delete(self, _id: UUID4) -> None:
-        stmt = delete(Accessories).where(Accessories.id == _id)
+    async def delete(self, _id: UUID4) -> dict[str, str] | None:
+        stmt_get = select(Accessories).where(Accessories.id == _id)
+        result = await self.session.execute(stmt_get)
+        accessories_models = result.scalar()
+        if not accessories_models:
+            return None
 
-        await self.session.execute(stmt)
+        stmt_del = delete(Accessories).where(Accessories.id == _id)
+
+        await self.session.execute(stmt_del)
         await self.session.commit()
+        return {"message": f" the {_id=} has been deleted"}
