@@ -17,14 +17,14 @@ class ClothingService:
     async def get_all_(self) -> Sequence[ClothingSchemaORM]:
         return await self.clothing_repository.get_all()
 
-    async def get_by_id(self, _id: UUID4) -> ClothingSchemaORM:
+    async def get_by_id(self, _id: UUID4) -> ClothingSchemaORM | None:
         return await self.clothing_repository.get_by_id(_id=_id)
 
     async def create(self, clothing: ClothingSchemaCRUD) -> ClothingSchemaORM:
         return await self.clothing_repository.create(new_clothing=clothing)
 
-    async def update(self, _id: UUID4, clothing: ClothingSchemaCRUD) -> None:
+    async def update(self, _id: UUID4, clothing: ClothingSchemaCRUD) -> dict | None:
         return await self.clothing_repository.update(_id=_id, update_clothing=clothing)
 
-    async def delete(self, _id: UUID4) -> None:
+    async def delete(self, _id: UUID4) -> dict | None:
         return await self.clothing_repository.delete(_id=_id)
