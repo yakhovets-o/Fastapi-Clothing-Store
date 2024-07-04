@@ -23,8 +23,10 @@ class ClothingService:
     async def create(self, clothing: ClothingSchemaCRUD) -> ClothingSchemaORM:
         return await self.clothing_repository.create(new_clothing=clothing)
 
-    async def update(self, _id: UUID4, clothing: ClothingSchemaCRUD) -> dict | None:
+    async def update(
+        self, _id: UUID4, clothing: ClothingSchemaCRUD
+    ) -> dict[str, str] | None:
         return await self.clothing_repository.update(_id=_id, update_clothing=clothing)
 
-    async def delete(self, _id: UUID4) -> dict | None:
+    async def delete(self, _id: UUID4) -> dict[str, str] | None:
         return await self.clothing_repository.delete(_id=_id)
