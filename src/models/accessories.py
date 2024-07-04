@@ -3,9 +3,7 @@ from sqlalchemy.orm import Mapped
 from src.enums import SizeAccessories
 
 from .base import Base
-from .mixins import UpdatedCreatedAtMixin
-from .mixins import UuidPkMixin
-
+from .mixins import UpdatedCreatedAtMixin, UuidPkMixin
 
 
 class Accessories(UuidPkMixin, Base, UpdatedCreatedAtMixin):
