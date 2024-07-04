@@ -19,16 +19,18 @@ class AccessoriesService:
     async def get_all_(self) -> Sequence[AccessoriesSchemaORM]:
         return await self.accessories_repository.get_all()
 
-    async def get_by_id(self, _id: UUID4) -> AccessoriesSchemaORM:
+    async def get_by_id(self, _id: UUID4) -> AccessoriesSchemaORM | None:
         return await self.accessories_repository.get_by_id(_id=_id)
 
     async def create(self, accessories: AccessoriesSchemaCRUD) -> AccessoriesSchemaORM:
         return await self.accessories_repository.create(new_accessories=accessories)
 
-    async def update(self, _id: UUID4, accessories: AccessoriesSchemaCRUD) -> None:
+    async def update(
+        self, _id: UUID4, accessories: AccessoriesSchemaCRUD
+    ) -> dict[str, str] | None:
         return await self.accessories_repository.update(
             _id=_id, update_accessories=accessories
         )
 
-    async def delete(self, _id: UUID4) -> None:
+    async def delete(self, _id: UUID4) -> dict[str, str] | None:
         return await self.accessories_repository.delete(_id=_id)
