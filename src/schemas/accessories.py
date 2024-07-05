@@ -6,21 +6,24 @@ from pydantic import (
     Field,
 )
 
-from src.enums import SizeAccessories
+from src.enums import SizeAccessory
 
 
-class AccessoriesSchemaCRUD(BaseModel):
+class AccessorySchemaCreate(BaseModel):
     brand: str
     name: str
-    size: SizeAccessories
+    size: SizeAccessory
     price: int = Field(ge=0)
     description: str
 
+    class Config:
+        from_attributes = True
 
-class AccessoriesSchemaORM(AccessoriesSchemaCRUD):
+
+class AccessorySchemaUpdate(AccessorySchemaCreate): ...
+
+
+class AccessorySchemaRead(AccessorySchemaCreate):
     id: UUID4
     create_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
