@@ -1,21 +1,19 @@
 __all__ = (
-    "AccessoriesSchemaORM",
-    "AccessoriesSchemaCRUD",
-    "FootwearSchemaORM",
-    "FootwearSchemaCRUD",
-    "ClothingSchemaORM",
-    "ClothingSchemaCRUD",
+    "AccessorySchemaCreate",
+    "AccessorySchemaUpdate",
+    "AccessorySchemaRead",
+    "FootwearSchemaCreate",
+    "FootwearSchemaRead",
+    "FootwearSchemaUpdate",
+    "ClothingSchemaUpdate",
+    "ClothingSchemaCreate",
+    "ClothingSchemaRead",
 )
 
 from .accessories import (
-    AccessoriesSchemaCRUD,
-    AccessoriesSchemaORM,
+    AccessorySchemaCreate,
+    AccessorySchemaRead,
+    AccessorySchemaUpdate,
 )
-from .clothing import (
-    ClothingSchemaCRUD,
-    ClothingSchemaORM,
-)
-from .footwear import (
-    FootwearSchemaCRUD,
-    FootwearSchemaORM,
-)
+from .clothing import ClothingSchemaCreate, ClothingSchemaRead, ClothingSchemaUpdate
+from .footwear import FootwearSchemaCreate, FootwearSchemaRead, FootwearSchemaUpdate
