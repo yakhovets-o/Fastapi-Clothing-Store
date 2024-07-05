@@ -1,32 +1,31 @@
-from typing import Sequence
+from typing import Optional
 
 from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.repository.clothing import ClothingRepository
-from src.schemas import (
-    ClothingSchemaCRUD,
-    ClothingSchemaORM,
-)
+from src.repositories.clothing import ClothingRepository
+from src.schemas import ClothingSchemaCreate, ClothingSchemaRead, ClothingSchemaUpdate
 
 
 class ClothingService:
     def __init__(self, session: AsyncSession) -> None:
         self.clothing_repository: ClothingRepository = ClothingRepository(session=session)
 
-    async def get_all_(self) -> Sequence[ClothingSchemaORM]:
+    async def get_all_(self) -> list[ClothingSchemaRead]:
         return await self.clothing_repository.get_all()
 
-    async def get_by_id(self, _id: UUID4) -> ClothingSchemaORM | None:
-        return await self.clothing_repository.get_by_id(_id=_id)
+    async def get_by_id(self, clothing_id: UUID4) -> Optional[ClothingSchemaRead]:
+        return await self.clothing_repository.get_by_id(clothing_id=clothing_id)
 
-    async def create(self, clothing: ClothingSchemaCRUD) -> ClothingSchemaORM:
+    async def create(self, clothing: ClothingSchemaCreate) -> ClothingSchemaRead:
         return await self.clothing_repository.create(new_clothing=clothing)
 
     async def update(
-        self, _id: UUID4, clothing: ClothingSchemaCRUD
-    ) -> dict[str, str] | None:
-        return await self.clothing_repository.update(_id=_id, update_clothing=clothing)
+        self, clothing_id: UUID4, clothing: ClothingSchemaUpdate
+    ) -> Optional[ClothingSchemaRead]:
+        return await self.clothing_repository.update(
+            clothing_id=clothing_id, update_clothing=clothing
+        )
 
-    async def delete(self, _id: UUID4) -> dict[str, str] | None:
-        return await self.clothing_repository.delete(_id=_id)
+    async def delete(self, clothing_id: UUID4) -> None:
+        return await self.clothing_repository.delete(clothing_id=clothing_id)
