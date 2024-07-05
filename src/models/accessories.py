@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Mapped
 
-from src.enums import SizeAccessories
+from src.enums import SizeAccessory
 
 from .base import Base
 from .mixins import UpdatedCreatedAtMixin, UuidPkMixin
 
 
-class Accessories(UuidPkMixin, Base, UpdatedCreatedAtMixin):
+class Accessories(Base, UuidPkMixin, UpdatedCreatedAtMixin):
     brand: Mapped[str]
     name: Mapped[str]
-    size: Mapped[SizeAccessories]
+    size: Mapped[SizeAccessory]
     price: Mapped[int]
     description: Mapped[str]
