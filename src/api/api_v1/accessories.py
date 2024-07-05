@@ -1,13 +1,17 @@
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 from fastapi_pagination import add_pagination
 from fastapi_pagination.links import LimitOffsetPage
 from pydantic import UUID4
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.helpers import db_helper
-from src.schemas import AccessoriesSchemaCRUD
+from src.dependencies import get_service
+from src.errors import EntityDoesNotExist
+from src.schemas import (
+    AccessorySchemaCreate,
+    AccessorySchemaRead,
+    AccessorySchemaUpdate,
+)
 from src.services import AccessoriesService
 
 
@@ -17,77 +21,73 @@ router = APIRouter()
 @router.get(
     "/",
     status_code=status.HTTP_200_OK,
-    response_model=LimitOffsetPage[AccessoriesSchemaCRUD],
+    response_model=LimitOffsetPage[AccessorySchemaRead],
 )
 async def get_all_accessories(
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+    service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))]
 ):
-    get_all = AccessoriesService(session=session)
-    return await get_all.get_all_()
+    return await service.get_all_()
 
 
 add_pagination(router)
 
 
 @router.get(
-    "/{id}/", status_code=status.HTTP_200_OK, response_model=AccessoriesSchemaCRUD | None
+    "/{id}/", status_code=status.HTTP_200_OK, response_model=Optional[AccessorySchemaRead]
 )
-async def get_accessories_by_id(
-    accessories_id: Annotated[UUID4, Path(alias="id")],
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+async def get_accessory_by_id(
+    accessory_id: Annotated[UUID4, Path(alias="id")],
+    service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))],
 ):
-    get_accessories = AccessoriesService(session=session)
-    result = await get_accessories.get_by_id(_id=accessories_id)
-    if not result:
+    try:
+
+        accessory = await service.get_by_id(accessory_id=accessory_id)
+        return accessory
+    except EntityDoesNotExist:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": f"{accessories_id=} not found"},
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": f"{accessory_id} not found"},
         )
-    return result
 
 
-@router.post(
-    "/", status_code=status.HTTP_201_CREATED, response_model=AccessoriesSchemaCRUD
-)
-async def create_accessories(
-    accessories: AccessoriesSchemaCRUD,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=AccessorySchemaRead)
+async def create_accessory(
+    accessory: AccessorySchemaCreate,
+    service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))],
 ):
-    new_accessories = AccessoriesService(session=session)
-    return await new_accessories.create(accessories=accessories)
+    return await service.create(accessory=accessory)
 
 
 @router.patch(
-    "/{id}/", status_code=status.HTTP_200_OK, response_model=dict[str, str] | None
+    "/{id}/", status_code=status.HTTP_200_OK, response_model=Optional[AccessorySchemaRead]
 )
-async def update_accessories(
-    accessories_id: Annotated[UUID4, Path(alias="id")],
-    accessories: AccessoriesSchemaCRUD,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+async def update_accessory(
+    accessory_id: Annotated[UUID4, Path(alias="id")],
+    accessory: AccessorySchemaUpdate,
+    service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))],
 ):
-    up_accessories = AccessoriesService(session=session)
-    result = await up_accessories.update(_id=accessories_id, accessories=accessories)
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": f"{accessories_id=} not found"},
+    try:
+        updated_accessory = await service.update(
+            accessory_id=accessory_id, accessory=accessory
         )
-    return result
+        return updated_accessory
+    except EntityDoesNotExist:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": f"{accessory_id} not found"},
+        )
 
 
-@router.delete(
-    "/{id}/", status_code=status.HTTP_200_OK, response_model=dict[str, str] | None
-)
+@router.delete("/{id}/", status_code=status.HTTP_204_NO_CONTENT, response_model=None)
 async def delete_accessories(
-    accessories_id: Annotated[UUID4, Path(alias="id")],
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    accessory_id: Annotated[UUID4, Path(alias="id")],
+    service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))],
 ):
-    del_accessories = AccessoriesService(session=session)
+    try:
+        await service.delete(accessory_id=accessory_id)
 
-    result = await del_accessories.delete(_id=accessories_id)
-    if not result:
+    except EntityDoesNotExist:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": f"{accessories_id=} not found"},
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": f"{accessory_id} not found"},
         )
-    return result
