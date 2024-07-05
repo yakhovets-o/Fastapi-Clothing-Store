@@ -1,13 +1,13 @@
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 from fastapi_pagination import add_pagination
 from fastapi_pagination.links import LimitOffsetPage
 from pydantic import UUID4
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.helpers import db_helper
-from src.schemas import FootwearSchemaCRUD
+from src.dependencies import get_service
+from src.errors.errors_db import EntityDoesNotExist
+from src.schemas import FootwearSchemaCreate, FootwearSchemaRead, FootwearSchemaUpdate
 from src.services import FootwearService
 
 
@@ -17,75 +17,72 @@ router = APIRouter()
 @router.get(
     "/",
     status_code=status.HTTP_200_OK,
-    response_model=LimitOffsetPage[FootwearSchemaCRUD],
+    response_model=LimitOffsetPage[FootwearSchemaRead],
 )
 async def get_all_footwear(
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)]
+    service: Annotated[FootwearService, Depends(get_service(FootwearService))]
 ):
-    get_all = FootwearService(session=session)
-    return await get_all.get_all_()
+    return await service.get_all_()
 
 
 add_pagination(router)
 
 
 @router.get(
-    "/{id}/", status_code=status.HTTP_200_OK, response_model=FootwearSchemaCRUD | None
+    "/{id}/", status_code=status.HTTP_200_OK, response_model=Optional[FootwearSchemaRead]
 )
 async def get_footwear_by_id(
     footwear_id: Annotated[UUID4, Path(alias="id")],
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    service: Annotated[FootwearService, Depends(get_service(FootwearService))],
 ):
-    get_footwear = FootwearService(session=session)
-    result = await get_footwear.get_by_id(_id=footwear_id)
-    if not result:
+    try:
+        footwear = await service.get_by_id(footwear_id=footwear_id)
+        return footwear
+    except EntityDoesNotExist:
+
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": f"{footwear_id=} not found"},
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": f"{footwear_id} not found"},
         )
-    return result
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=FootwearSchemaCRUD)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=FootwearSchemaRead)
 async def create_footwear(
-    footwear: FootwearSchemaCRUD,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    footwear: FootwearSchemaCreate,
+    service: Annotated[FootwearService, Depends(get_service(FootwearService))],
 ):
-    new_footwear = FootwearService(session=session)
-    return await new_footwear.create(footwear=footwear)
+    return await service.create(footwear=footwear)
 
 
 @router.patch(
-    "/{id}/", status_code=status.HTTP_200_OK, response_model=dict[str, str] | None
+    "/{id}/", status_code=status.HTTP_200_OK, response_model=Optional[FootwearSchemaRead]
 )
 async def update_footwear(
     footwear_id: Annotated[UUID4, Path(alias="id")],
-    footwear: FootwearSchemaCRUD,
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    footwear: FootwearSchemaUpdate,
+    service: Annotated[FootwearService, Depends(get_service(FootwearService))],
 ):
-    upd_footwear = FootwearService(session=session)
-    result = await upd_footwear.update(_id=footwear_id, footwear=footwear)
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": f"{footwear_id=} not found"},
+    try:
+        updated_footwear = await service.update(
+            footwear_id=footwear_id, footwear=footwear
         )
-    return result
+        return updated_footwear
+    except EntityDoesNotExist:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": f"{footwear_id} not found"},
+        )
 
 
-@router.delete(
-    "/{id}/", status_code=status.HTTP_200_OK, response_model=dict[str, str] | None
-)
+@router.delete("/{id}/", status_code=status.HTTP_201_CREATED, response_model=None)
 async def delete_footwear(
     footwear_id: Annotated[UUID4, Path(alias="id")],
-    session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+    service: Annotated[FootwearService, Depends(get_service(FootwearService))],
 ):
-    del_footwear = FootwearService(session=session)
-
-    result = await del_footwear.delete(_id=footwear_id)
-    if not result:
+    try:
+        await service.delete(footwear_id=footwear_id)
+    except EntityDoesNotExist:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": f"{footwear_id=} not found"},
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": f"{footwear_id} not found"},
         )
-    return result
