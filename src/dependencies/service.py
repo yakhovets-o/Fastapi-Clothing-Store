@@ -1,5 +1,5 @@
-from fastapi import Depends  # type: ignore[import-not-found]
-from sqlalchemy.ext.asyncio import AsyncSession  # type: ignore[import-not-found]
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.helpers import db_helper
 
