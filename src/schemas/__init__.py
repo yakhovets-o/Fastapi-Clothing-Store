@@ -15,5 +15,13 @@ from .accessories import (
     AccessorySchemaRead,
     AccessorySchemaUpdate,
 )
-from .clothing import ClothingSchemaCreate, ClothingSchemaRead, ClothingSchemaUpdate
-from .footwear import FootwearSchemaCreate, FootwearSchemaRead, FootwearSchemaUpdate
+from .clothing import (
+    ClothingSchemaCreate,
+    ClothingSchemaRead,
+    ClothingSchemaUpdate,
+)
+from .footwear import (
+    FootwearSchemaCreate,
+    FootwearSchemaRead,
+    FootwearSchemaUpdate,
+)
