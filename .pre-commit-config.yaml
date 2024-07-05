@@ -13,5 +13,4 @@ repos:
     rev: ''
     hooks:
       - id: mypy
-        args:
-          - --explicit-package-bases
+        args: ["--ignore-missing-imports", "--scripts-are-modules"]

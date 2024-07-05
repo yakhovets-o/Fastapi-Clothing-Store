@@ -9,18 +9,21 @@ from pydantic import (
 from src.enums import SizeFootwear
 
 
-class FootwearSchemaCRUD(BaseModel):
+class FootwearSchemaCreate(BaseModel):
     brand: str
     name: str
     size: SizeFootwear
     price: int = Field(ge=0)
     description: str
 
+    class Config:
+        from_attributes = True
 
-class FootwearSchemaORM(FootwearSchemaCRUD):
+
+class FootwearSchemaUpdate(FootwearSchemaCreate): ...
+
+
+class FootwearSchemaRead(FootwearSchemaCreate):
     id: UUID4
     create_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
