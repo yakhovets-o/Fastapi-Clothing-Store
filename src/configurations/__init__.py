@@ -15,6 +15,7 @@ from .app import (
     RunAppConfig,
 )
 from .database import DatabaseConfig
+from .redis_cache import RedisConfig
 
 
 load_dotenv(find_dotenv())
@@ -31,6 +32,7 @@ class Settings(BaseSettings):
     fastapi: FastApiConfig = FastApiConfig()
     api: ApiConfig = ApiConfig()
     db: DatabaseConfig
+    redis: RedisConfig
 
 
 settings: Settings = Settings()  # type: ignore
