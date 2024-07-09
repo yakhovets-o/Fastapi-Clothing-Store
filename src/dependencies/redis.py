@@ -1,4 +1,4 @@
-from redis.asyncio import Redis  # type: ignore[import-untyped]
+from redis.asyncio import Redis
 
 from src.configurations import settings
 
