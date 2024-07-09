@@ -12,6 +12,7 @@ sqlalchemy = "^2.0.31"
 asyncpg = "^0.29.0"
 alembic = "^1.13.2"
 fastapi-pagination = "^0.12.25"
+redis = "^5.0.7"
 
 
 [tool.poetry.group.dev.dependencies]
