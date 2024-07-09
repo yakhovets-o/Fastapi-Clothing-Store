@@ -1,11 +1,13 @@
+import pickle
 from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 from fastapi_pagination import add_pagination
 from fastapi_pagination.links import LimitOffsetPage
 from pydantic import UUID4
+from redis.asyncio import Redis
 
-from src.dependencies import get_service
+from src.dependencies import cache, get_service
 from src.errors import EntityDoesNotExist
 from src.schemas import (
     AccessorySchemaCreate,
@@ -38,10 +40,20 @@ add_pagination(router)
 async def get_accessory_by_id(
     accessory_id: Annotated[UUID4, Path(alias="id")],
     service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))],
+    redis_client: Annotated[Redis, Depends(cache)],
 ):
+    if (
+        cached_accessory := await redis_client.get(f"accessory_{accessory_id}")
+    ) is not None:
+        return pickle.loads(cached_accessory)
+
     try:
 
         accessory = await service.get_by_id(accessory_id=accessory_id)
+        await redis_client.set(
+            f"accessory_{accessory_id}", pickle.dumps(accessory), ex=240
+        )
+
         return accessory
     except EntityDoesNotExist:
         raise HTTPException(
@@ -65,11 +77,14 @@ async def update_accessory(
     accessory_id: Annotated[UUID4, Path(alias="id")],
     accessory: AccessorySchemaUpdate,
     service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))],
+    redis_client: Annotated[Redis, Depends(cache)],
 ):
     try:
         updated_accessory = await service.update(
             accessory_id=accessory_id, accessory=accessory
         )
+        await redis_client.delete(f"accessory_{accessory_id}")
+
         return updated_accessory
     except EntityDoesNotExist:
         raise HTTPException(
@@ -82,10 +97,11 @@ async def update_accessory(
 async def delete_accessories(
     accessory_id: Annotated[UUID4, Path(alias="id")],
     service: Annotated[AccessoriesService, Depends(get_service(AccessoriesService))],
+    redis_client: Annotated[Redis, Depends(cache)],
 ):
     try:
         await service.delete(accessory_id=accessory_id)
-
+        await redis_client.delete(f"accessory_{accessory_id}")
     except EntityDoesNotExist:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
