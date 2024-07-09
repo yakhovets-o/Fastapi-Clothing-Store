@@ -70,7 +70,7 @@ check_untyped_defs = true
 #Если установить значение true,
 #mypy будет запрещать неявное переэкспортирование (re-export) символов.
 no_implicit_reexport = true
-
+disable_error_code = ['attr-defined', 'import-untyped']
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
