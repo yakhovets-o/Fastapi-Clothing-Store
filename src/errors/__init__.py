@@ -1,3 +1,4 @@
-__all__ = ("EntityDoesNotExist",)
+__all__ = ("EntityDoesNotExistDb", "EntityDoesNotExistApi")
 
-from .errors_db import EntityDoesNotExist
+from .errors_api import EntityDoesNotExistApi
+from .errors_db import EntityDoesNotExistDb
