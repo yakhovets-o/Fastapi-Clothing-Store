@@ -5,7 +5,7 @@ from pydantic import UUID4
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.errors.errors_db import EntityDoesNotExist
+from src.errors import EntityDoesNotExistDb
 from src.models import Clothing
 from src.schemas import ClothingSchemaCreate, ClothingSchemaRead, ClothingSchemaUpdate
 
@@ -34,7 +34,7 @@ class ClothingRepository:
     async def get_by_id(self, clothing_id: UUID4) -> Optional[ClothingSchemaRead]:
         clothing_model = await self._get_instance(clothing_id=clothing_id)
         if not clothing_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
         return ClothingSchemaRead.model_validate(clothing_model)
 
     async def create(self, new_clothing: ClothingSchemaCreate) -> ClothingSchemaRead:
@@ -49,7 +49,7 @@ class ClothingRepository:
     ) -> Optional[ClothingSchemaRead]:
         clothing_model = await self._get_instance(clothing_id=clothing_id)
         if not clothing_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
 
         clothing_data = update_clothing.model_dump(
             exclude_unset=True, exclude={"id", "create_at", "updated_at"}
@@ -67,7 +67,7 @@ class ClothingRepository:
 
         clothing_model = await self._get_instance(clothing_id=clothing_id)
         if not clothing_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
 
         await self.session.delete(clothing_model)
         await self.session.commit()

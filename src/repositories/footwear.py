@@ -7,7 +7,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.errors.errors_db import EntityDoesNotExist
+from src.errors import EntityDoesNotExistDb
 from src.models import Footwear
 from src.schemas import FootwearSchemaCreate, FootwearSchemaRead, FootwearSchemaUpdate
 
@@ -36,7 +36,7 @@ class FootwearRepository:
     async def get_by_id(self, footwear_id: UUID4) -> Optional[FootwearSchemaRead]:
         footwear_model = await self._get_instance(footwear_id=footwear_id)
         if not footwear_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
         return FootwearSchemaRead.model_validate(footwear_model)
 
     async def create(self, new_footwear: FootwearSchemaCreate) -> FootwearSchemaRead:
@@ -51,7 +51,7 @@ class FootwearRepository:
     ) -> Optional[FootwearSchemaRead]:
         footwear_model = await self._get_instance(footwear_id=footwear_id)
         if not footwear_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
 
         footwear_data = update_footwear.model_dump(
             exclude_unset=True, exclude={"id", "create_at", "updated_at"}
@@ -67,7 +67,7 @@ class FootwearRepository:
     async def delete(self, footwear_id: UUID4) -> None:
         footwear_model = await self._get_instance(footwear_id=footwear_id)
         if not footwear_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
 
         await self.session.delete(footwear_model)
         await self.session.commit()

@@ -5,7 +5,7 @@ from pydantic import UUID4
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.errors import EntityDoesNotExist
+from src.errors import EntityDoesNotExistDb
 from src.models import Accessories
 from src.schemas import (
     AccessorySchemaCreate,
@@ -38,7 +38,7 @@ class AccessoriesRepository:
     async def get_by_id(self, accessory_id: UUID4) -> Optional[AccessorySchemaRead]:
         accessory_model = await self._get_instance(accessory_id=accessory_id)
         if not accessory_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
         return AccessorySchemaRead.model_validate(accessory_model)
 
     async def create(self, new_accessory: AccessorySchemaCreate) -> AccessorySchemaRead:
@@ -54,7 +54,7 @@ class AccessoriesRepository:
     ) -> Optional[AccessorySchemaRead]:
         accessory_model = await self._get_instance(accessory_id=accessory_id)
         if not accessory_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
 
         accessory_data = update_accessory.model_dump(
             exclude_unset=True, exclude={"id", "create_at", "updated_at"}
@@ -71,7 +71,7 @@ class AccessoriesRepository:
     async def delete(self, accessory_id: UUID4) -> None:
         accessory_model = await self._get_instance(accessory_id=accessory_id)
         if not accessory_model:
-            raise EntityDoesNotExist
+            raise EntityDoesNotExistDb
 
         await self.session.delete(accessory_model)
         await self.session.commit()
